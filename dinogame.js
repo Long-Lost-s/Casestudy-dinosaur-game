@@ -16,9 +16,14 @@
         width : dinoWidth,
         height : dinoHeight
     }
+    let cloudImg;
+    let cloudArray = [];
+    let cloudWidth = 100;
+    let cloudHeight = 60;
+    let cloudSpeed = -2;
+
 
     let cactusArray = [];
-
      let cactus1Width = 34;
      let cactus2Width = 69;
      let cactus3Width = 102;
@@ -61,9 +66,12 @@
         cactus2Img.src = "./img/cactus2.png";
         cactus3Img = new Image();
         cactus3Img.src = "./img/cactus3.png";
+        cloudImg = new Image();
+        cloudImg.src = "./img/cloud.png";
 
         requestAnimationFrame(update)
         setTimeout(playCactus, 1000);
+        setInterval(playCloud, 3000);
         document.addEventListener("keydown", moveDino);
         document.addEventListener("keyup", resetDinoImage);
 
@@ -76,6 +84,14 @@
         }
 
         context.clearRect(0, 0, boardWidth, boardHeight);
+
+        for (let i = 0; i < cloudArray.length; i++) {
+            let cloud = cloudArray[i];
+            cloud.x += cloudSpeed;
+            context.drawImage(cloudImg, cloud.x, cloud.y, cloud.width, cloud.height);
+        }
+        cloudArray = cloudArray.filter(cloud => cloud.x + cloud.width > 0);
+
         velocityY += gravity;
         dino.y = Math.min(dino.y + velocityY, dinoY);
         context.drawImage(dinoImg, dino.x, dino.y, dino.width, dino.height);
@@ -119,7 +135,7 @@
         if (e.code === "ArrowDown") {
             dinoImg.src = "./img/dino.png";
         }
-        }
+    }
 
             function playCactus() {
                 if (gameOver) {
@@ -156,6 +172,15 @@
                 // Gọi lại playCactus để tạo xương rồng mới định kỳ
                 setTimeout(playCactus, 1000);
             }
+    function playCloud() {
+        let cloud = {
+            x: boardWidth,
+            y: Math.random() * (boardHeight - 150), // Vị trí y ngẫu nhiên cho đám mây
+            width: cloudWidth,
+            height: cloudHeight
+        }
+        cloudArray.push(cloud);
+    }
 
             function detectCollisions(a, b) {
                 return a.x < b.x + b.width &&

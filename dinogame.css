@@ -4,6 +4,9 @@ body {
 }
 
 #board {
-    background-color: lightgray;
-    border-bottom: 1px blueviolet;
+    background-color: white;
+    border-bottom: 3px black solid;
+    border-top: 3px black solid;
+    border-left: 3px black solid;
+    border-right: 3px black solid;
 }
