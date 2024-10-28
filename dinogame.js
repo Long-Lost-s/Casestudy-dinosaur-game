@@ -8,7 +8,10 @@
     let dinoX = 50;
     let dinoY = boardHeight - dinoHeight;
     let dinoImg;
-    let dinodownImg;
+    let dinoRun1Img;
+    let dinoRun2Img;
+
+    let frameCount = 0;
 
     let dino = {
         x : dinoX,
@@ -50,6 +53,12 @@
 
         context = board.getContext("2d");
 
+        dinoRun1Img = new Image();
+        dinoRun1Img.src = "./img/dino-run1.png";
+        dinoRun2Img = new Image();
+        dinoRun2Img.src = "./img/dino-run2.png";
+        dinoImg = dinoRun1Img;
+
         // context.fillStyle = "blue";
         // context.fillRect(dino.x, dino.y, dino.width, dino.height);
         dinoImg = new Image();
@@ -57,8 +66,6 @@
         dinoImg.onload = function() {
             context.drawImage(dinoImg, dino.x, dino.y, dino.width, dino.height);
         }
-        dinodownImg = new Image();
-        dinodownImg.src = "./img/dino-duck1.png";
 
         cactus1Img = new Image();
         cactus1Img.src = "./img/cactus1.png";
@@ -73,9 +80,6 @@
         setTimeout(playCactus, 1000);
         setInterval(playCloud, 3000);
         document.addEventListener("keydown", moveDino);
-        document.addEventListener("keyup", resetDinoImage);
-
-
     }
     function update() {
         requestAnimationFrame(update);
@@ -94,6 +98,13 @@
 
         velocityY += gravity;
         dino.y = Math.min(dino.y + velocityY, dinoY);
+
+        frameCount++;
+        if (frameCount % 10 < 5) {
+            dinoImg = dinoRun1Img;
+        } else {
+            dinoImg = dinoRun2Img;
+        }
         context.drawImage(dinoImg, dino.x, dino.y, dino.width, dino.height);
 
         for (let i = 0; i < cactusArray.length; i++) {
@@ -116,7 +127,6 @@
         context.font = "20px courier";
         score++;
         context.fillText(score, 5, 20);
-
     }
 
     function moveDino(e) {
@@ -125,15 +135,6 @@
         }
         if ((e.code === "Space" || e.code === "ArrowUp") && dino.y === dinoY ) {
             velocityY =  -10;
-        }
-        if (e.code === "ArrowDown" && dino.y === dinoY ) {
-            dinoImg.src = dinodownImg.src;
-
-        }
-    }
-    function resetDinoImage(e) {
-        if (e.code === "ArrowDown") {
-            dinoImg.src = "./img/dino.png";
         }
     }
 
@@ -169,13 +170,12 @@
                     cactusArray.push(cactus);
                 }
 
-                // Gọi lại playCactus để tạo xương rồng mới định kỳ
                 setTimeout(playCactus, 1000);
             }
     function playCloud() {
         let cloud = {
             x: boardWidth,
-            y: Math.random() * (boardHeight - 150), // Vị trí y ngẫu nhiên cho đám mây
+            y: Math.random() * (boardHeight - 150),
             width: cloudWidth,
             height: cloudHeight
         }
