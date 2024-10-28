@@ -138,7 +138,6 @@
 
             if (detectCollisions(dino, cactus)) {
                 gameOver = true;
-                dino.src = "./img/dino-dead.png";
                 dinoImg.onload = function() {
                     context.drawImage(dinoImg, dino.x, dino.y, dinoImg.width, dinoImg.height);
                 }
