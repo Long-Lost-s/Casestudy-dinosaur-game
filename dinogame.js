@@ -117,7 +117,7 @@
     }
     function resetDinoImage(e) {
         if (e.code === "ArrowDown") {
-            dinodownImg.src = "./img/dino-duck1.png";
+            dinoImg.src = "./img/dino.png";
         }
         }
 
